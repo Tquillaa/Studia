@@ -1,0 +1,11 @@
+cmake_minimum_required( VERSION 3.0 )
+
+project( Zadania3 )
+
+# flags
+
+# include files
+include_directories( ./include ./src ./libs )
+
+# target
+add_executable( binary ./src/main.cpp ./src/matrix.cpp )
