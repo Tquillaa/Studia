@@ -1,8 +1,45 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <exception>
 #include <Zadania3/matrix.hpp>
 using namespace std;
+
+class RoznicaWierszy : public exception
+{
+    virtual const char *what() const throw()
+    {
+        return "Liczba wierszy w obu macierzach nie zgadza sie";
+    }
+};
+class RoznicaKolumn : public exception
+{
+    virtual const char *what() const throw()
+    {
+        return "Liczba kolumn w obu macierzach nie zgadza sie";
+    }
+};
+class KolumnyRozneWiersze : public exception
+{
+    virtual const char *what() const throw()
+    {
+        return "Liczba kolumn 1-szej macierzy rozna od liczby wierszy 2-gier macierzy";
+    }
+};
+class WierszeRozneKolumny : public exception
+{
+    virtual const char *what() const throw()
+    {
+        return "Liczba wierszy 1-szej macierzy rozna od liczby kolumn 2-gier macierzy";
+    }
+};
+class BladPliku : public exception
+{
+    virtual const char *what() const throw()
+    {
+        return "My exception :)";
+    }
+};
 
 Matrix::Matrix(int n, int m){
        this->tab = new double[n*m]();
@@ -47,43 +84,61 @@ double Matrix::get(int n, int m){
     return this->tab[n*this->n+m];
 }
 Matrix Matrix::add(Matrix &m2){
-    if(this->n == m2.n && this->m == m2.m){
-        Matrix m3(this->n, this->m);
+    RoznicaWierszy rw;
+    RoznicaKolumn rk;
+    try {
+        if(this->n != m2.n) throw rw;
+        if(this->m != m2.m) throw rk;
+         Matrix m3(this->n, this->m);
         for(int i = 0;i<this->rows();i++){
-            for(int j = 0;j<this->cols();j++){
-                m3.tab[i*this->n+j] = this->tab[i*this->n+j] + m2.tab[i*this->n+j];
-            }
+               for(int j = 0;j<this->cols();j++){
+                  m3.tab[i*this->n+j] = this->tab[i*this->n+j] + m2.tab[i*this->n+j];
+               }
         }
         return m3;
     }
-    return *this;
+    catch(exception &e){
+        cout<<e.what()<<endl;
+    }
 }
 Matrix Matrix::subtract(Matrix &m2){
-    if(this->n == m2.n && this->m == m2.m){
+    RoznicaWierszy rw;
+    RoznicaKolumn rk;
+    try {
+        if(this->n != m2.n) throw rw;
+        if(this->m != m2.m) throw rk;
         Matrix m3(this->n, this->m);
         for(int i = 0;i<this->rows();i++){
-            for(int j = 0;j<this->cols();j++){
-                m3.tab[i*this->n+j] = this->tab[i*this->n+j] - m2.tab[i*this->n+j];
-            }
+               for(int j = 0;j<this->cols();j++){
+                  m3.tab[i*this->n+j] = this->tab[i*this->n+j] - m2.tab[i*this->n+j];
+               }
         }
         return m3;
     }
-    return *this;
+    catch(exception &e){
+        cout<<e.what()<<endl;
+    }
 }
 Matrix Matrix::multiply(Matrix &m2){
-    if(this->n == m2.m && this->m == m2.n){
+    KolumnyRozneWiersze krw;
+    WierszeRozneKolumny wrk;
+    try {
+        if(this->n != m2.m) throw wrk;           
+        if(this->m != m2.n) throw krw;
         Matrix m3(this->n, m2.m);
         for(int i = 0;i<this->n;i++){
-            for(int j = 0;j<m2.m;j++){
+              for(int j = 0;j<m2.m;j++){
                 double suma = 0;
-                for(int k = 0;k <this->m;k++)
+                   for(int k = 0;k <this->m;k++)
                     suma += this->tab[j * m + k] * m2.tab[k * m2.m + i];
-                m3.tab[j * m2.m + i] = suma;
+                   m3.tab[j * m2.m + i] = suma;
             }
         }
         return m3;
     }
-    return *this;
+    catch(exception &e){
+        cout<<e.what()<<endl;
+    }
 }
 int Matrix::rows(){
     return n;
@@ -98,11 +153,18 @@ void Matrix::print(){
     }
 }
 void Matrix::store(string filename, string path){
-    ofstream f(path+filename);
-    f<<this->n<<" "<<this->m<<endl;
-    for(int i = 0;i<this->n*this->m;i++){
-        if(i!= 0 && i%m==0) f<<endl;
-        f<<this->tab[i]<<" ";
+    BladPliku bp;
+    try {
+        ofstream f(path+filename);
+        if(!f) throw bp;
+        f<<this->n<<" "<<this->m<<endl;
+        for(int i = 0;i<this->n*this->m;i++){
+            if(i!= 0 && i%m==0) f<<endl;
+            f<<this->tab[i]<<" ";
+        }
+        f.close();
     }
-    f.close();
-}
+    catch(exception &e){
+        cout<<e.what()<<endl;
+    }
+} 
