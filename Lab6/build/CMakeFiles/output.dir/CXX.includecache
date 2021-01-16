@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/Lab6/employee.hpp
+string
+-
+
+../include/Lab6/hrms.hpp
+string
+-
+
+/home/user/Pulpit/JiPP/Lab6/src/main.cpp
+iostream
+-
+stdlib.h
+-
+time.h
+-
+Lab6/employee.hpp
+-
+Lab6/hrms.hpp
+-
+
