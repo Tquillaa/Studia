@@ -1,14 +1,21 @@
-class Matrix{
+class Matrix {
     private:
+        
+
+    public:
         int n,m;
         double *tab;
 
-    public:
         Matrix(int n, int m);
         Matrix(int n);
         Matrix(const Matrix &m2);
         Matrix(std::string path);
         ~Matrix();
+
+        Matrix operator+(Matrix &m1);
+        Matrix operator-(Matrix &m1);
+        Matrix operator*(Matrix &m1);
+
         void set(int n, int m, double val);
         double get(int n, int m);
         Matrix add(Matrix &m2);
