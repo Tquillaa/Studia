@@ -1,5 +1,7 @@
 #include <iostream>
+
 #include <Zadania3/matrix.hpp>
+
 using namespace std;
 
 int main(){
@@ -62,17 +64,20 @@ int main(){
 
     //Dodanie macierzy m3 i m4
     cout<<endl<<"Dodanie macierzy m3 i m4";
-    Matrix dodawanie = m3.add(m4);
+    //Matrix dodawanie = m3.add(m4);
+    Matrix dodawanie = m3 + m4;
     dodawanie.print();
 
     //Odejmowanie mecierzy m4 i m3
     cout<<endl<<"Odjecie od m4 macierzy m3";
-    Matrix odejmowanie = m4.subtract(m3);
+    //Matrix odejmowanie = m4.subtract(m3);
+    Matrix odejmowanie = m4 - m3;
     odejmowanie.print();
 
     //Mnozenie macierzy m1 i m2
     cout<<endl<<"Mnozenie macierzy m1 i m2";
-    Matrix mnozenie = m1.multiply(m2);
+    //Matrix mnozenie = m1.multiply(m2);
+    Matrix mnozenie = m1 * m2;
     mnozenie.print();
 
     //Zwrocenie ile ma wierszy

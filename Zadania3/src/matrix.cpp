@@ -2,7 +2,11 @@
 #include <string>
 #include <fstream>
 #include <exception>
+#include <stdio.h>
+#include <string.h>
+
 #include <Zadania3/matrix.hpp>
+
 using namespace std;
 
 class RoznicaWierszy : public exception
@@ -77,6 +81,22 @@ Matrix::Matrix(string path){
 Matrix::~Matrix(){
     delete [] this->tab;
 }
+
+Matrix Matrix::operator+(Matrix &m1){
+    Matrix m = this->add(m1);
+    return m;
+}
+
+Matrix Matrix::operator-(Matrix &m1){
+    Matrix m = this->subtract(m1);
+    return m;
+}
+
+Matrix Matrix::operator*(Matrix &m1){
+    Matrix m = this->multiply(m1);
+    return m;
+}
+
 void Matrix::set(int n, int m, double val){
     this->tab[n*this->n+m] = val;
 }
@@ -89,7 +109,7 @@ Matrix Matrix::add(Matrix &m2){
     try {
         if(this->n != m2.n) throw rw;
         if(this->m != m2.m) throw rk;
-         Matrix m3(this->n, this->m);
+        Matrix m3(this->n, this->m);
         for(int i = 0;i<this->rows();i++){
                for(int j = 0;j<this->cols();j++){
                   m3.tab[i*this->n+j] = this->tab[i*this->n+j] + m2.tab[i*this->n+j];
